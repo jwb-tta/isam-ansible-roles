@@ -1,0 +1,34 @@
+# main task to export mapping rule
+#list of mapping rules to export is in rules_to_export
+---
+- name: Get all rules
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.aac.mapping_rules.get_all
+  register: ret_obj
+
+- name: Save Result
+  set_fact:
+    all_mapping_rules: "{{ ret_obj.data }}"
+
+- name: Export policy 
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.aac.mapping_rules.export_file
+    isamapi:
+           name: "{{ item.name }}"
+           filename: "{{ mapping_rules_output_dir }}/{{ item.name }}.js"
+  loop: "{{ all_mapping_rules }}"
+  loop_control:
+      label: "EXPORT : {{ item.name }}.js"
+  when: item.name in rules_to_export

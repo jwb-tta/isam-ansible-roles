@@ -1,0 +1,15 @@
+- name: Rename Certificate Database - {{rename_certificate_database_id}}
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.base.ssl_certificates.certificate_databases.rename
+    isamapi:
+      cert_id     : "{{ rename_certificate_database_id }}"
+      new_name    : "{{ rename_certificate_database_new_name }}"
+  when: rename_certificate_database_id is defined and rename_certificate_database_new_name is defined
+  notify:
+  - Commit Changes

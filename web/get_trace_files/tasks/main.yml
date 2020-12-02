@@ -1,0 +1,23 @@
+# main task to get all trace files
+---
+- name: Get trace files
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.web.reverse_proxy.trace.get_all_logs
+    isamapi:
+      instance_id: "{{ get_trace_rp_id }}"
+      component_id: "{{ get_trace_component }}"
+  register: ret_obj
+
+- set_fact:
+    rp_trace_files: "{{ ret_obj.data }} "

@@ -1,0 +1,32 @@
+# main task 
+---
+- name: Read proxy config parameters
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: "ibmsecurity.isam.web.reverse_proxy.configuration.entry.get"
+    isamapi: 
+        reverseproxy_id: "{{ reverseproxy_id }}"
+        stanza_id:       "{{ item.stanza }}"
+        entry_id: "{{ item.entry_name }}"        
+  with_items:
+    "{{ get_parameters }}"
+  register: ret_obj
+
+
+- name: Format result
+  set_fact:
+    read_parameters: "{{ read_parameters|default({}) | combine( {parameter: value} ) }}"
+  vars:
+    parameter: "{{item.keys()[0]}}"
+    value: "{{item[parameter]}}"
+  with_items: "{{ret_obj | json_query('results[*].data')}}"  

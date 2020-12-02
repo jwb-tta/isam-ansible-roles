@@ -1,0 +1,16 @@
+# main task to configure mapping rules
+---
+- name: Mappings
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.aac.access_policy.get_all
+  register: ret_obj
+
+- name: Save Result
+  set_fact:
+    all_access_policies: "{{ret_obj.data}}"

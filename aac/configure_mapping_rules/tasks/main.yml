@@ -17,7 +17,7 @@
     isamapi:
       name: "{{ item.name }}"
       category: "{{ item.category }}"
-      upload_filename: "{{ inventory_dir }}/{{ item.file }}"
+      upload_filename: "{{ item.file }}"
   when: item.name == name and item.category == category
   with_items: "{{ mapping_rules }}"
   notify: Commit Changes

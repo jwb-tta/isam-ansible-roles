@@ -145,7 +145,7 @@
     force:     "{{ force | default(omit) }}"
     action: ibmsecurity.isam.web.reverse_proxy.management_root.all.import_zip
     isamapi:
-      filename: "{{ inventory_dir }}/{{ file }}"
+      filename: "{{  file }}"
       instance_id: "{{ inst_name }}"
       delete_missing: "{{ delete_missing }}"
   when: file is defined and file != 'none' and inst_name is defined and inst_name != 'none'

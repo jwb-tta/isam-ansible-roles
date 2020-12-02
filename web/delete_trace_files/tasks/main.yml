@@ -1,0 +1,22 @@
+# main task to delete trace files
+---
+- name: Delete trace files
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.web.reverse_proxy.trace.delete
+    isamapi:
+      instance_id: "{{ delete_trace_rp_id }}"
+      component_id: "{{ delete_trace_component }}"
+      file_id: "{{ item.id }}"      
+  with_items: "{{ trace_files_to_delete }}"
+

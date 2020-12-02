@@ -1,0 +1,5 @@
+# Default variables for import of federation partners
+metadata: []
+
+fed_name: "{{ item.federation }}"
+partner_name: "{{ item.partner_name }}"

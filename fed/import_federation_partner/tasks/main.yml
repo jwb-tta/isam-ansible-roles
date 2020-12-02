@@ -1,0 +1,33 @@
+# main task to import federation partners
+#   Example: 
+#     metadata:
+#       - type: file
+#         federation: fed01
+#         partner_name: partner01
+#         filename: saml/fed01/partner01.xml
+#       - type: file
+#         federation: fed99
+#         partner_name: partner02
+#         filename: saml/fed99/partner02.xml
+- name: Import federation partners with metadata
+  isam:
+    appliance: "{{ inventory_hostname }}"
+#    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+#    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+#    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+#    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+#    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.fed.partners.import_metadata
+    isamapi:
+      federation_name: "{{ item.federation }}"
+      partner_name: "{{ item.partner_name }}"
+      filename: "{{ item.filename }}"
+  with_items:
+    - "{{ metadata }}"
+  when: item.type == "file"
+  notify: Commit Changes

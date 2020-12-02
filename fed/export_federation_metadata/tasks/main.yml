@@ -1,0 +1,27 @@
+# main task to export metadata
+#   Example: 
+#     federations:
+#       - name: fed01
+#         filename: saml/fed01/partner01.xml
+#       - name: fed99
+#         filename: saml/fed99/partner02.xml
+- name: Export federation metadata
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.fed.federations.export_metadata
+    isamapi:
+      name: "{{ item.name }}"
+      filename: "{{ item.filename }}"
+  with_items:
+    - "{{ export_federations }}"
+  notify: Commit Changes

@@ -17,7 +17,7 @@
     isamapi:
       kdb_id: "{{ item.kdb_id }}"
       label: "{{ item.label }}"
-      cert: "{{ inventory_dir }}/{{ item.cert }}"
+      cert: "{{  item.cert }}"
       password: "{{ item.password }}"
   with_items: "{{ personal_certificates }}"
   notify: Commit Changes

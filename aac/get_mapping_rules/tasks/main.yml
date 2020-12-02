@@ -1,6 +1,6 @@
-# Get all mapping rules and register the mapping_rules_obj, to use in other roles/playbooks
+# main task to configure mapping rules
 ---
-- name: Get all Mapping Rules
+- name: Mappings
   isam:
     appliance: "{{ inventory_hostname }}"
     username:  "{{ username }}"
@@ -9,5 +9,8 @@
     log:       "{{ log_level }}"
     force:     "{{ force }}"
     action: ibmsecurity.isam.aac.mapping_rules.get_all
-    isamapi:
-  register: mapping_rules_obj
+  register: ret_obj
+
+- name: Save Result
+  set_fact:
+    all_mapping_rules: "{{ret_obj.data}}"

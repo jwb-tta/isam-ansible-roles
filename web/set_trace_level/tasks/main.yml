@@ -1,0 +1,25 @@
+# main task to set trace level for a WS component
+---
+- name: Set trace level
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.web.reverse_proxy.trace.set
+    isamapi:
+      instance_id: "{{ set_trace_rp_id }}"
+      component_id: "{{ set_trace_component }}"
+      level: "{{ set_trace_level }}"
+      flush_interval: "{{ set_trace_flash_interval }}"
+      rollover_size : "{{ set_trace_rollover_size }}"
+      max_rollover_files : "{{ set_trace_rollover_files}}"
+      compress: "{{ set_trace_compress }}"
+

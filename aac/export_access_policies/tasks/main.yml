@@ -1,0 +1,33 @@
+# main task to export access_policy
+---
+- name: Get all policies
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.aac.access_policy.get_all
+  register: ret_obj
+
+- name: Save Result
+  set_fact:
+    all_access_policies: "{{ ret_obj.data }}"
+
+- name: Export policy 
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.aac.access_policy.export_file
+    isamapi:
+           name: "{{ item.name }}"
+           filename: "{{ access_policy_output_dir }}/{{ item.name }}.js"
+  loop: "{{ all_access_policies }}"
+  loop_control:
+      label: "EXPORT : {{ item.name }}.js"
+  when: all_access_policies is defined

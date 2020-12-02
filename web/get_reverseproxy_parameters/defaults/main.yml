@@ -1,0 +1,8 @@
+# Set following variables:
+#        reverseproxy_id: webseal01
+#        get_parameters:
+#            - { stanza: server, entry_name: server-name }
+# 
+# Read results from read_parameters
+#    - debug:
+#        var: read_parameters['server-name'][0]

@@ -1,0 +1,27 @@
+# main task for extracting certificates
+# Example inventory:
+#  delete_personal_certificates:
+#    - kdb_id:     "{{ item.kdb_id }}"
+#      cert_id:    "{{ item.cert_id }}"
+---
+- name: Delete certificates
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.base.ssl_certificates.personal_certificate.delete
+    isamapi:
+      kdb_id:     "{{ item.kdb_id }}"
+      cert_id:    "{{ item.cert_id }}"
+  with_items: "{{ delete_personal_certificates }}"
+  loop_control:
+    label: "{u'kdb_id': u'{{ item.kdb_id }}', u'password': u'*****', u'cert_id': u'{{ item.cert_id }}'}"
+  notify: Commit Changes

@@ -1,0 +1,17 @@
+galaxy_info:
+  author: IBM
+  description: Role to export fed metadata
+  company: IBM
+
+  license: Apache
+
+  min_ansible_version: 2.2
+
+  galaxy_tags:
+  - isam
+  - ibm
+  - export
+  - federation_partner
+
+dependencies:
+  - start_config

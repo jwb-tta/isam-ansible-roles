@@ -17,5 +17,5 @@
       comment: "{{ comment | default(omit) }}"
       id: "{{ id | default(omit) }}"
       ids: "{{ ids | default(omit) }}"
-      filename: "{{ inventory_dir }}/{{ filename }}"
+      filename: "{{ filename }}"
   when: filename is defined and (comment is defined or id is defined or ids is defined)

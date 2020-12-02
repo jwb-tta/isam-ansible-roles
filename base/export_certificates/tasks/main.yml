@@ -3,10 +3,10 @@
 #  export_certificates:
 #      kdb_id:     "{{ item.kdb_id }}"
 #      cert_id:    "{{ item.cert_id }}"
-#      filename:   "{{ inventory_dir }}/{{ item.filename }}"
+#      filename:   "{{  item.filename }}"
 ---
 - name: Create local directory structure
-  file: path="{{ inventory_dir }}/{{ item.filename | dirname }}" state=directory
+  file: path="{{ item.filename | dirname }}" state=directory
   with_items: "{{ export_certificates }}"
 - name: Export certificates
   isam:
@@ -25,5 +25,5 @@
     isamapi:
       kdb_id:     "{{ item.kdb_id }}"
       cert_id:    "{{ item.cert_id }}"
-      filename:   "{{ inventory_dir }}/{{ item.filename }}"
+      filename:   "{{  item.filename }}"
   with_items: "{{ export_certificates }}"

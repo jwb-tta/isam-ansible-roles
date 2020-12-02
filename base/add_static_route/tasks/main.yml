@@ -1,0 +1,29 @@
+# Example
+# Provide the following dictionary as vars
+# static_routes:
+#   - label: '1.1'
+#     addresses:
+#       - address: "10.252.72.92"
+#         enabled: True
+#         gateway: "10.252.144.4"
+#         comment: 'elastic1'
+#         table: main
+#       - address: "10.252.72.93"
+#         enabled: True
+#         gateway: 10.252.144.4
+#         comment: 'elastic2'
+#         table: main
+- name: Add Static Routes
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.base.network.static_routes.add
+    isamapi: "{{ {} | combine(item.0) | combine(item.1) }}"
+  with_subelements:
+    -   "{{ static_routes }}"
+    -   addresses
+  notify: Commit Changes

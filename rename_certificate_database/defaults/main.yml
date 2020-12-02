@@ -1,0 +1,3 @@
+# Provide the following values for this role to work
+#rename_certificate_database_id: "pdsrv"
+#rename_certificate_database_new_name: "webseal01"

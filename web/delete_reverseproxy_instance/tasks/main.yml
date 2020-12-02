@@ -1,0 +1,21 @@
+# main task to delete reverse proxy instance
+
+---
+- name: Delete reverse proxy instances
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    adminProxyProtocol: "{{ adminProxyProtocol | default(omit) }}"
+    adminProxyHostname: "{{ adminProxyHostname | default(omit) }}"
+    adminProxyPort: "{{ adminProxyPort | default(omit) }}"
+    adminProxyApplianceShortName: "{{ adminProxyApplianceShortName | default(omit) }}"
+    omitAdminProxy: "{{ omitAdminProxy | default(omit) }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ port | default(omit) }}"
+    log:       "{{ log_level | default(omit) }}"
+    force:     "{{ force | default(omit) }}"
+    action: ibmsecurity.isam.web.reverse_proxy.instance.delete
+    isamapi:
+      id: "{{ delete_reverseproxy_id }}"
+      admin_id: "{{ delete_reverseproxy_admin_id }}"
+      admin_pwd: "{{ delete_reverseproxy_admin_pwd }}"

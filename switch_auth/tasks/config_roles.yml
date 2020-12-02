@@ -100,6 +100,23 @@
   when: switch_auth_security_viewer_group is defined
   notify: Commit Changes
 
+- name: Setup Security Viewer User
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.base.management_authorization.role_user.set
+    isamapi:
+      name:       "Security Viewer"
+      user_name: "{{ item }}"
+      type:       "ldap"
+  with_items: "{{ switch_auth_security_viewer_user | default([]) }}"
+  when: switch_auth_security_viewer_user is defined
+  notify: Commit Changes
+
 - name: Setup System Administrator
   isam:
     appliance: "{{ inventory_hostname }}"

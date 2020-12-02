@@ -81,7 +81,7 @@
     force:     "{{ force | default(omit) }}"
     action: ibmsecurity.isam.aac.runtime_template.root.import_file
     isamapi:
-      filename: "{{ inventory_dir }}/{{ file }}"
-      delete_missing: "{{ delete_missing }}"
+      filename: "{{ file }}"
+      # delete_missing: "{{ delete_missing }}"
   when: file is defined and file != 'none'
   notify: Commit Changes

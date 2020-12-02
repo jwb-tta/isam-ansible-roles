@@ -19,7 +19,7 @@
   failed_when: "(ret_obj.msg is defined and '500' in ret_obj.msg)"
 
 - name: Check local file
-  stat: path="{{ inventory_dir }}/{{ item.directory }}/{{ element.path }}"
+  stat: path="{{ item.directory }}/{{ element.path }}"
   with_items: "{{ (ret_obj.data.contents if (ret_obj.data is defined and ret_obj.data.contents is defined) else (ret_obj.data if (ret_obj.data is defined) else ([]))) | flatten_management_root }}"
   loop_control:
     loop_var: element
@@ -53,7 +53,7 @@
   set_fact:
     directory_update_item: "{{ {'action': 'create', 'type': create.state, 'path': ((item.target+'/'+create.path) | dirname) if (item.target != '') else (create.path | dirname), 'name': (create.path | basename) } }}"
   when: create.state == "directory"
-  with_filetree: "{{ inventory_dir }}/{{ item.directory }}"
+  with_filetree: "{{ item.directory }}"
   loop_control:
     loop_var: create
     label: "{{ {'action': 'create', 'type': create.state, 'path': ((item.target+'/'+create.path) | dirname) if (item.target != '') else (create.path | dirname), 'name': (create.path | basename) } }}"
@@ -66,7 +66,7 @@
   set_fact:
     file_update_item: "{{ {'action': 'upload', 'target': (item.target+'/'+ upload.path) if (item.target != '') else (upload.path), 'type': upload.state, 'file': upload.src } }}"
   when: upload.state == "file"
-  with_filetree: "{{ inventory_dir }}/{{ item.directory }}"
+  with_filetree: "{{ item.directory }}"
   loop_control:
     loop_var: upload
     label: "{{ {'action': 'upload', 'type': item.state, 'target': (item.target+'/'+ upload.path) if (item.target != '') else (upload.path), 'file': upload.src } }}"

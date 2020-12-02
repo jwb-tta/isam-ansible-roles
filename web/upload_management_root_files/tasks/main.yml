@@ -21,7 +21,7 @@
     action: ibmsecurity.isam.web.reverse_proxy.management_root.file.import_file
     isamapi:
       id: "{{ item.target }}"
-      filename: "{{ inventory_dir }}/{{ item.file }}"
+      filename: "{{  item.file }}"
       instance_id: "{{ item.instance_id }}"
   with_items: "{{ management_root_files }}"
   when: (item.file | basename) == name and item.instance_id == inst_name

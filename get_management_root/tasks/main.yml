@@ -1,0 +1,57 @@
+# get 1st level files and directories 
+# result will be saved in mgmt_root_files and mgmt_root_dirs variables
+
+- name: Set root directories
+  set_fact:
+    management_root_dirs:
+      - errors
+      - junction-root
+      - management
+      - oauth
+      - snippets
+
+- name: Get Management root
+  isam:
+    appliance: "{{ inventory_hostname }}"
+    username:  "{{ username }}"
+    password:  "{{ password }}"
+    lmi_port:  "{{ lmi_port }}"
+    log:       "{{ log_level }}"
+    force:     "{{ force }}"
+    action: ibmsecurity.isam.web.reverse_proxy.management_root.directory.get
+    isamapi:
+      instance_id: "{{ reverseproxy_id }}"
+      dir_name: "{{ item }}"
+      recursive: no
+  with_items: "{{management_root_dirs}}"
+  register: ret_obj
+  
+
+
+- name: Set variable for use by rest of playbook
+  set_fact:
+    file_list: "{{file_list|default([]) + [ {'dir': item['item'], 'content': item['data']['contents']} ] }}"   
+  with_items: "{{ret_obj['results']}}"
+
+
+- name: Build file list
+  set_fact:
+    mgmt_root_files: "{{mgmt_root_files|default([]) + [ item.0.dir + '/' + item.1.name] }}"   
+  when: item.1.type == 'File'
+  with_subelements:
+    - "{{ file_list }}"
+    - content
+
+- set_fact:
+    mgmt_root_files: "{{mgmt_root_files|default([])}}"
+
+- name: Build dir list
+  set_fact:
+    mgmt_root_dirs: "{{mgmt_root_dirs|default([]) + [ item.0.dir + '/' + item.1.name] }}"   
+  when: item.1.type == 'Directory'
+  with_subelements:
+    - "{{ file_list }}"
+    - content
+
+- set_fact:
+    mgmt_root_dirs: "{{mgmt_root_dirs|default([])}}"

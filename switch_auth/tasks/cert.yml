@@ -34,7 +34,7 @@
     password:  "{{ password }}"
     lmi_port:  "{{ lmi_port }}"
     log:       "{{ log_level }}"
-    force:     "{{ force }}"
+    force:     true
     action: ibmsecurity.isam.base.ssl_certificates.signer_certificate.load
     isamapi:
       kdb_id: "{{ switch_auth_key_database }}"
